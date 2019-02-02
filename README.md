@@ -123,3 +123,88 @@ var app6 = new Vue({
   }
 })
 ```
+
+### Composing with Components
+The component system is another important concept in Vue. It's an abstraction that allows us to build large-scale apps composed of small, self-contained, reusable components. Almost any type of application interface can be abstracted into a tree of components.
+
+In Vue, a component is essentially a Vue instance with pre-defined options. Registering a component in Vue is straightforward:
+
+```js
+// Define a new component called todo-item
+Vue.component('todo-item', {
+  template: '<li>This is a todo</li>'
+})
+```
+
+Now you can compose it in another component's template:
+
+```html
+<ol>
+  <!-- Create an instance of the todo-item component -->
+  <todo-item></todo-item>
+</ol>
+```
+
+But this would render the same text fot every todo. We should be able to pass data from the parent scope into child components. Let's modify the component definition to make it accept a `prop`:
+
+```js
+Vue.component('todo-item', {
+  // The todo-item component now accepts a
+  // "prop", which is like a custom attribute.
+  // This prop is called todo.
+  props: ['todo'],
+  template: '<li>{{ todo.text }}</li>'
+})
+```
+
+Then we can pass the todo into each repeated component using `v-bind`:
+
+```html
+<div id="app-7">
+  <ol>
+    <!--
+      Now we provide each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which will be explained later.
+    -->
+    <todo-item
+      v-for="item in groceryList"
+      v-bind:todo="item"
+      v-bind:key="item.id"
+    ></todo-item>
+  </ol>
+</div>
+```
+
+```js
+Vue.component('todo-item', {
+  props: ['todo'],
+  template: '<li>{{ todo.text }}</li>'
+})
+
+var app7 = new Vue({
+  el: '#app-7',
+  data: {
+    groceryList: [
+      { id: 0, text: 'Vegetables' },
+      { id: 1, text: 'Cheese' },
+      { id: 2, text: 'Whatever else humans are supposed to eat' }
+    ]
+  }
+})
+```
+
+We have managed to separate our app into two smaller units, and the child is reasonably well-decoupled from the parent via the props interface. We can now further improve our `<todo-item>` component with more complex template and logic without affecting the parent app.
+
+In a large app, it is necessary to divide the whole thing into components to make development manageable. Here's an imaginary sample of what that might look like.
+
+```html
+<div id="app">
+  <app-nav></app-nav>
+  <app-view>
+    <app-sidebar></app-sidebar>
+    <app-content></app-content>
+  </app-view>
+</div>
+```
