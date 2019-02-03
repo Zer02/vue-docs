@@ -1,7 +1,11 @@
-# Getting Started
+# Vue.js Docs
+
+## Introduction
+
+### Getting Started
 --------
 Template:
-## Section Title
+### Section Title
 Summary...
 
 ```html
@@ -10,7 +14,7 @@ Summary...
 ```js
 ```
 --------
-## Declarative Rendering
+### Declarative Rendering
 At the core of Vue.js is a system that enables us to declaratively render data to the DOM using straightforward template syntax:
 
 ```html
@@ -32,7 +36,7 @@ var app = new Vue({
 `Directives` are attributes added to your HTML files as attributes. They are prefixed with `v-` to indicate that they are special attributes provided by Vue, and as you may have guessed, they apply special reactive behavior to the rendered DOM.
 
 
-## Conditionals and Loops
+### Conditionals and Loops
 
 ```html
 <div id="app-3">
@@ -208,3 +212,17 @@ In a large app, it is necessary to divide the whole thing into components to mak
   </app-view>
 </div>
 ```
+
+## The Vue Instance
+
+### Creating a Vue Instance
+Every Vue function starts by creating a new Vue instance with the Vue function:
+
+```js
+var vm = new Vue({
+  // options
+})
+```
+As a convention, we often use the variable `vm` (short for ViewModel) to refer to our Vue instance.
+
+When you create a Vue instance, you pass in an **options object**. The majority of this guide describes how you can use these options to create your desired behavior.
