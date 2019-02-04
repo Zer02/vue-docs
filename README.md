@@ -226,3 +226,29 @@ var vm = new Vue({
 As a convention, we often use the variable `vm` (short for ViewModel) to refer to our Vue instance.
 
 When you create a Vue instance, you pass in an **options object**. The majority of this guide describes how you can use these options to create your desired behavior.
+
+### Data and Methods
+When a Vue instance is created, it adds all the properties found in its `data` object to Vue's **reactivity system**. When the values of those properties change, the view will "react", updating to match the new values.
+
+```js
+// Our data object
+var data = { a: 1 }
+
+// The object is added to a Vue instance
+var vm = new Vue({
+  data: data
+})
+
+// Getting the property on the instance
+// returns the one from the original data
+vm.a == data.a // => true
+
+// Setting the property on the instance
+// also affects the original data
+vm.a = 2
+data.a // => 2
+
+// ... and vice-versa
+data.a = 3
+vm.a // => 3
+```
