@@ -1,19 +1,22 @@
-# Vue.js Docs
+# Vue Documentation Tutorial
+
+Note on Setup: 
+If you have an existing project and would like to keep documentation inside the project, you should install VuePress as a local dependency. This setup also allows you to use CI or services like Netlify for automatic deployment on push.
+```bash
+# Add vuepress into an existing project
+yarn add -D vuepress
+
+# Run vuepress
+yarn docs:dev
+```
 
 ## Introduction
 
-### Getting Started
---------
-Template:
-### Section Title
-Summary...
+### What is Vue.js?
+Vue is a **progressive framework** for building user interfaces. It is designed from the ground up to be incrementally adoptable. The core library is focused on the view layer only and is easy to pick up and integrate with other libraries or existing projects. 
 
-```html
-```
+Vue is also perfectly capable of powering sophisticated Single-Page Applications when used in combination with modern tooling and supporting libraries.
 
-```js
-```
---------
 ### Declarative Rendering
 At the core of Vue.js is a system that enables us to declaratively render data to the DOM using straightforward template syntax:
 
