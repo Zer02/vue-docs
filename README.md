@@ -255,3 +255,25 @@ data.a // => 2
 data.a = 3
 vm.a // => 3
 ```
+
+When this data changes, the view will re-render. Properties in `data` are onlt reactive if they existed when the instance was created. If you know you'll need a property later, but it starts out empty or non-existent, you'll need to set some initial value. 
+
+The only exception to this is the use of `Object.freeze()`, which prevents existing properties from being changed, which also means the reactivity system can't track changes.
+
+In addition to data properties, Vue instances expose a number of useful instance properties and methods. These are prefixed with `$` to differentiate them from user-defined properties. For example:
+
+```js
+var data = { a: 1 }
+var vm = new Vue({
+  el: '#example',
+  data: data
+})
+
+vm.$data === data // => true
+vm.$el === document.getElementById('example') // => true
+
+// $watch is an instance method
+vm.$watch('a', function (newValue, oldValue) {
+  // This callback will be called when `vm.a` changes
+})
+```
