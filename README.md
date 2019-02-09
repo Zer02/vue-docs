@@ -277,3 +277,6 @@ vm.$watch('a', function (newValue, oldValue) {
   // This callback will be called when `vm.a` changes
 })
 ```
+
+## Template Syntax
+Vue.js uses an HTML-based template syntax that allows you to declaritively bind the rendered DOM to the underlying Vue instance's data. All Vue.js templates are valid HTML that can be parsed by spec-compliant browsers and HTML parsers.
