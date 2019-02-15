@@ -280,3 +280,67 @@ vm.$watch('a', function (newValue, oldValue) {
 
 ## Template Syntax
 Vue.js uses an HTML-based template syntax that allows you to declaritively bind the rendered DOM to the underlying Vue instance's data. All Vue.js templates are valid HTML that can be parsed by spec-compliant browsers and HTML parsers.
+
+Under the hood, Vue compiles the templates into Virtual DOM render functions. Combined with the reactivity system, Vue is able to intelligently figure out the minimal amount of components to re-render and apply the minimal amount of DOM manipulations when the app state changes.
+
+### Interpolations
+
+#### Text
+The most basic form of data binding is text interpolation using the "Mustache" syntax:
+
+```html
+<span>Message: {{ msg }}</span>
+```
+
+The mustache tag will be replaced with the value of the `msg` property on the corresponding data object. It will also be updated whenever the data object's `msg` property changes.
+
+You can also perform one-time interpolations that do not update on data change by using the `v-once` directive, but keep in mind this will also affect any other bindings on the same node:
+
+```html
+<span v-once>This will never change: {{ msg }}</span>
+```
+
+#### Raw HTML
+The double mustaches interpret the data as plain text, not HTML. To output real HTML, you will need the `v-html` directive:
+
+```html
+<p>Using v-html directive: <span v-html="rawHtml"></span></p>
+```
+
+#### Attributes
+Mustaches cannot be used inside HTML attributes. Instead, use a `v-bind` directive:
+
+```html
+<div v-bind:id="dynamicId"></div>
+```
+
+In the case of boolean attributes, where their mere existence implies `true`, `v-bind` works a little differently. In this example:
+
+```html
+<div v-bind:disabled="isButtonDisabled">Button</button>
+```
+
+If `isButtonDisabled` has the value of `null`, `undefined`, or `false`, the `disabled` attribute will not even be included in the rendered `<button>` element.
+
+#### Using JavaScript Expressions
+Vue supports the full power of JavaScript expressions inside all data bindings:
+
+```html
+{{ number + 1 }}
+
+{{ ok ? 'YES' : 'NO' }}
+
+{{ message.split('').reverse().join('') }}
+
+<div v-bind:id="'list-' + id"></div>
+```
+
+These expressions will be evaluated as JavaScript in the data scope of the owner Vue instance. One restriction is that each binding can only contain one single expression, so the following will NOT work:
+
+```html
+<!-- this is a statement, not an expression: -->
+{{ var a = 1 }}
+
+<!-- flow control won't work either, use ternary expressions -->
+{{ if (ok) { return message } }}
+```
