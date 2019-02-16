@@ -344,3 +344,35 @@ These expressions will be evaluated as JavaScript in the data scope of the owner
 <!-- flow control won't work either, use ternary expressions -->
 {{ if (ok) { return message } }}
 ```
+
+### Directives
+Directives are special attributes with the  `v-` prefix. Directive attribute values are expected to be a single JavaScript expression (with the exception of `v-for`). A directive's job is to reactively apply side effects to the DOM when the value of its expression changes. Let's review the example we saw in the intro:
+
+```html
+<p v-if="seen">Now you see me</p>
+```
+
+Here, the `v-if` directive would remove/insert the `<p>` element based on the truthiness of the value of the expression `seen`.
+
+#### Arguments
+Some directives can take an "argument", denoted by a colon after the directive name. For example, the `v-bind` directive is used to reactively update an HTML attribute:
+
+```html
+<a v-bind:href="url">...</a>
+```
+
+Here, `href` is the argument, which tells the `v-bind` directive to bind the element's `href` attribute to the value of the expression `url`.
+
+Another example is the `v-on` directive, which listens to DOM events. In this example, the argument is the event name we listen to:
+
+```html
+<a v-on:click="doSomething"> ... </a>
+```
+
+#### Dynamic Arguments
+Starting in version 2.6.0, it is also possible to use a JavaScript expression in a directive argument by wrapping it with square brackets:
+
+```html
+<a v-bind:[attributeName]="url"> ... </a>
+```
+
