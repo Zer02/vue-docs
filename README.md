@@ -1,6 +1,6 @@
 # Vue Documentation Tutorial
 
-Note on Setup: 
+## Note on Setup: 
 If you have an existing project and would like to keep documentation inside the project, you should install VuePress as a local dependency. This setup also allows you to use CI or services like Netlify for automatic deployment on push.
 ```bash
 # Add vuepress into an existing project
@@ -439,3 +439,42 @@ The `v-` prefix serves as a visual cue for identifying Vue-specific attributes i
 ```
 
 They may look a bit different from normal HTML, but `:` and `@` are valid characters for attribute names and all Vue-supported browsers can parse it correctly. In addition, they do not appear in the final rendered markup. The shorthand syntax is totally optional, but you will likely appreciate it when you learn more about its usage later.
+
+
+## Computed Properties and Watchers
+
+### Computed Properties
+In-template expressions are convenient, but they are meant for simple operations. Putting too much logic in your templates can make them bloated and hard to maintain. That's why for any complex logic, you should use a computed property.
+
+#### Basic Example
+
+```html
+<div id="example">
+  <p>Original message: "{{ message }}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+</div>
+```
+
+```js
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // a computed getter
+    reversedMessage: function () {
+      // `this` points to the vm instance
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+```
+
+Here we have declared a computed property `reversedMessage`. The function we provided will be used as the getter function for the property `vm.reversedMessage`: 
+```js
+console.log(vm.reversedMessage) // => 'olleH'
+vm.message = 'Goodbye'
+console.log(vm.reversedMessage) // => 'eybdooG'
+```
+You can data-bind to computed properties in templates just like a normal property. Vue is aware that `vm.reversedMessage` depends on `vm.message`, so it will update any bindings that depend on `vm.reversedMessage` when `vm.message` changes. And the best part is that we've created this dependency relationship declaratively: the computed getter function has no side effects, which makes is easier to test and understand.
