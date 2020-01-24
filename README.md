@@ -478,3 +478,22 @@ vm.message = 'Goodbye'
 console.log(vm.reversedMessage) // => 'eybdooG'
 ```
 You can data-bind to computed properties in templates just like a normal property. Vue is aware that `vm.reversedMessage` depends on `vm.message`, so it will update any bindings that depend on `vm.reversedMessage` when `vm.message` changes. And the best part is that we've created this dependency relationship declaratively: the computed getter function has no side effects, which makes is easier to test and understand.
+
+#### Computed Caching vs Methods
+Instead of a computed property, we can define the same function as a method. The end result is the same, but **computed properties are cached based on their reactive dependencies.** A computed property will only re-evaluate when some of its reactive dependencies have changed. This means as long as `message` has not changed, multiple access to the `reversedMessage` computed property will immediately return the previously computed result without having to run the function again.
+
+This also means the following computed property will never update, because `Date.now()` is not a reactive dependency:
+
+```js
+computed: {
+  now: function () {
+    return Date.now()
+  }
+}
+```
+
+In comparison, a method invocation will **always** run the function whenever a re-render happens.
+
+Why do we need caching? Imagine we have an expensive computed property **A**, which requires looping through a huge Array and doing a lot of computations. Then we may have other computed properties that in turn depend on **A**. Without caching, we would be executing **A**’s getter many more times than necessary! In cases where you do not want caching, use a method instead.
+
+<!-- #### Computed vs Watched Property -->
