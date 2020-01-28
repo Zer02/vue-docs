@@ -578,7 +578,7 @@ For example:
 </div>
 ```
 
-```js
+```html
 <!-- Since there is already a rich ecosystem of ajax libraries    -->
 <!-- and collections of general-purpose utility methods, Vue core -->
 <!-- is able to remain small by not reinventing them. This also   -->
@@ -633,3 +633,72 @@ var watchExampleVM = new Vue({
 In this case, using the `watch` option allows us to perform an async operation (accessing an API), limit how often we perform that operation, and set intermediary states until we get a final answer. None of that would be possible with a computed property.
 
 In addition to the `watch` option, you can also use the imperative `vm.$watch` API.
+
+
+## Class and Style Bindings
+A common need for data binding is manipulating an element's class list and its inline styles. Since they are both attributes, we can use `v-bind` to handle them. However, meddling with a string concatenation is annoying and error-prone. For this reason, Vue provides special enhancements when `v-bind` is used with `class` and `style`. In addition to strings, the expressions can also evaluate to objects and arrays.
+
+### Binding HTML Classes
+
+#### Object Syntax
+We can pass an object to `v-bind:class` to dynamically toggle classes:
+
+```html
+<div v-bind:class="{ active: isActive }"></div>
+```
+
+The above syntax means the presence of the `active` class will be determined by the **truthiness** of the data property `isActive`.
+
+You can have multiple classes toggled by having more fields in the object. In addition, the `v-bind:class` directive can also co-exist with the plain `class` attribute. So given the following template:
+```html
+<div
+  class="static"
+  v-bind:class="{ active: isActive, 'text-danger': hasError }"
+></div>
+```
+
+And the following data:
+```js
+data: {
+  isActive: true,
+  hasError: false
+}
+```
+
+It will render:
+```html
+<div v-bind:class="classObject"></div>
+```
+
+When `isActive` or `hasError` changes, the class list will be updated accordingly. For example, if `hasError` becomes `true`, the class list will become `"static active text-danger"`.
+
+The bound object doesn't have to be inline:
+```html
+<div v-bind:class="classObject"></div>
+```
+```js
+data: {
+  classObject: {
+    active: true,
+    'text-danger': false
+  }
+}
+```
+
+This will render the same result. We can also bing to a **computed property** that returns an object. This is a common and powerful pattern:
+```html
+<div v-bind:class="classObject"></div>
+```
+```js
+  isActive: true,
+  error: null
+},
+computed: {
+  classObject: function () {
+    return {
+      active: this.isActive && !this.error,
+      'text-danger': this.error && this.error.type === 'fatal'
+    }
+  }
+}
+```
