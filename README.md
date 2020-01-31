@@ -737,3 +737,32 @@ However, this can be a bit verbose if you have multiple conditional classes. Tha
 ```
 
 #### With Components
+When you use the `class` attribute on a custom component, those classes will be added to the component's root element. Existing classes on this element will not be overwritten.
+
+For example, if you declare this component:
+
+```js
+Vue.component('my-component', {
+  template: '<p class="foo bar">Hi</p>'
+})
+```
+
+Then add some classes when using it:
+```html
+<my-component class="baz boo"></my-component>
+```
+
+The rendered HTML will be:
+```html
+<p class="foo bar baz boo">Hi</p>
+```
+
+The same is true for class bindings:
+```html
+<my-component v-bind:class="{ active: isActive }"></my-component>
+```
+
+When `isActive` is truthy, the rendered HTML will be:
+```html
+<p class="foo bar active">Hi</p>
+```
