@@ -766,3 +766,35 @@ When `isActive` is truthy, the rendered HTML will be:
 ```html
 <p class="foo bar active">Hi</p>
 ```
+
+
+## Components Basics
+
+### Base Example
+
+```js
+// Define a new component called button-counter
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+```
+
+Components are reusable Vue instances with a name: in this case, `<button-counter>`. We can use this component as a custom element inside a root Vue instance created with `new Vue`:
+
+```html
+<div id="components-demo">
+  <button-counter></button-counter>
+</div>
+```
+```js
+new Vue({ el: '#components-demo' })
+```
+
+Since components are reusable Vue instances, they accept the same options as `new Vue`, such as `data`, `computed`, `watch`, `methods`, and lifecycle hooks. The only exceptions are a few root-specific options like `el`.
+
+### Reusing Components
