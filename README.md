@@ -798,3 +798,39 @@ new Vue({ el: '#components-demo' })
 Since components are reusable Vue instances, they accept the same options as `new Vue`, such as `data`, `computed`, `watch`, `methods`, and lifecycle hooks. The only exceptions are a few root-specific options like `el`.
 
 ### Reusing Components
+Components can be reused as many times as you want:
+
+```html
+<div id="components-demo">
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+</div>
+```
+
+Notice that when clicking on the buttons, each one maintains its own, separate `count`. That's because each time you use a component, a new **instance** of it is created.
+
+#### `data` Must Be a Function
+
+When we defined the `<button-counter>` component, you may have noticed that `data` wasn't directly provided an object, like this:
+
+```js
+data: {
+  count: 0
+}
+```
+
+Instead, **a component's `data` option must be a function**, so that each instance can maintain an independent copy of the returned data object:
+
+```js
+data: function () {
+  return {
+    count: 0
+  }
+}
+```
+
+If Vue didn't have this rule, clicking on one button would affect the data of *all other instances*.
+
+
+### Organizing Components
