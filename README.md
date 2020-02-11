@@ -834,3 +834,16 @@ If Vue didn't have this rule, clicking on one button would affect the data of *a
 
 
 ### Organizing Components
+It's common for an app to be organized into a tree of nested components. For example, you might have components for a header, sidebar, and content area, each typically containing other components for navigation links, blog posts, etc.
+
+To use these components in templates, they must be registered so that Vue knows about them. There are two types of component registration: **global** and **local**. So far, we've only registered components globally, using `Vue.component`:
+
+```js
+Vue.component('my-component-name', {
+  // ... options ...
+})
+```
+
+Globally registered components can be used in the template of any root Vue instance (`new Vue`) created afterwards - and even inside all subcomponents of that Vue instance's component tree.
+
+### Passing Data to Child Components with Props
