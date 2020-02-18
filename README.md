@@ -892,3 +892,62 @@ Above you'll see that we can use `v-bind` to dynamically pass props. This is esp
 
 
 ### A Single Root Element
+When building out a `<blog-post>` component, your template will eventually contain more than just the title:
+
+```html
+<h3>{{ title }}</h3>
+```
+
+At the very least, you'll want to include the post's content:
+
+```html
+<h3>{{ title }}</h3>
+<div v-html="content"></div>
+```
+
+If you try this in your template, however, Vue will show an error, explaining that **every componentmust have a single root element**. You can fix this error by wrapping the template in a parent element, such as:
+
+```html
+<div class="blog-post">
+  <h3>{{ title }}</h3>
+  <div v-html="content"></div>
+</div>
+```
+
+As our component grows, it’s likely we’ll not only need the title and content of a post, but also the published date, comments, and more. Defining a prop for each related piece of information could become very annoying:
+
+```html
+<blog-post
+  v-for="post in posts"
+  v-bind:key="post.id"
+  v-bind:title="post.title"
+  v-bind:content="post.content"
+  v-bind:publishedAt="post.publishedAt"
+  v-bind:comments="post.comments"
+></blog-post>
+```
+
+So this might be a good time to refactor the `<blog-post>` component to accept a single `post` prop instead:
+
+```html
+<blog-post
+  v-for="post in posts"
+  v-bind:key="post.id"
+  v-bind:post="post"
+></blog-post>
+```
+```js
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <div v-html="post.content"></div>
+    </div>
+  `
+})
+```
+
+Now, whenever a new property is added to `post` objects, it will automatically be available inside `<blog-post>`.
+
+### Listening to Child Components Events
