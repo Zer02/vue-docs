@@ -1025,3 +1025,91 @@ Thanks to the `v-on:enlarge-text="postFontSize += 0.1"` listener, the parent wil
 
 
 #### Emitting a Value with an Event
+It's sometimes useful to emit a specific value with an event. For example, we may want the `<blog-post>` component to be in charge of how much to enlarge the text by. In those cases, we can use `$emit`'s 2nd parameter to provide this value:
+
+```html
+<button v-on:click="$emit('enlarge-text', 0.1)">
+  Enlarge text
+</button>
+```
+
+Then when we listen to the event in the parent, we can access the emitted event's value with `$event`:
+
+```html
+<blog-post
+  ...
+  v-on:enlarge-text="postFontSize += $event"
+></blog-post>
+```
+
+Or, if the event handler is a method:
+
+```html
+<blog-post
+  ...
+  v-on:enlarge-text="onEnlargeText"
+></blog-post>
+```
+
+Then the value will be passed as the first parameter of that method:
+
+```js
+methods: {
+  onEnlargeText: function (enlargeAmount) {
+    this.postFontSize += enlargeAmount
+  }
+}
+```
+
+
+#### Using v-model on Components
+Custom events can also be used to create custom inputs that work with `v-model`. Remember that:
+
+```html
+<input v-model="searchText">
+```
+
+does the same thing as :
+
+```html
+<input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event.target.value"
+>
+```
+
+When used on a component, `v-model` instead does this:
+
+```html
+<custom-input
+  v-bind:value="searchText"
+  v-on:input="searchText = $event"
+></custom-input>
+```
+
+For this to actually work though, the `<input>` inside the component must:
+* Bind the `value` attribute to a `value` prop
+* On `input`, emit its own custom `input` event with the new value
+
+Here's that in action:
+
+```js
+Vue.component('custom-input', {
+  props: ['value'],
+  template: `
+    <input
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+    >
+  `
+})
+```
+
+Now `v-model` should work perfectly with this component:
+
+```html
+<custom-input v-model="searchText"></custom-input>
+```
+
+
+### Content Distribution with Slots
