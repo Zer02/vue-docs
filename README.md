@@ -1113,3 +1113,35 @@ Now `v-model` should work perfectly with this component:
 
 
 ### Content Distribution with Slots
+Just like with HTML elements, it's often useful to be able to pass content to a component, like this:
+
+```html
+<alert-box>
+  Something bad happened.
+</alert-box>
+```
+
+Fortunately, this task is made very simple by Vue's custom `<slot>` element:
+
+```js
+Vue.component('alert-box', {
+  template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `
+})
+```
+
+As you'll see above, we just add the slot where we want it to go - and that's it. We're done!
+
+<!-- 
+### Dynamic Components
+Sometimes, it's useful to dynamically switch between components, like in a tabbed interface. 
+-->
+
+<!-- 
+### DOM Template Parsing Caveats
+-->
+
