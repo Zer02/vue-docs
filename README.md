@@ -1,4 +1,4 @@
-# Vue Documentation Tutorial
+# Vue Essentials
 
 ## Note on Setup: 
 If you have an existing project and would like to keep documentation inside the project, you should install VuePress as a local dependency. This setup also allows you to use CI or services like Netlify for automatic deployment on push.
@@ -1145,3 +1145,31 @@ Sometimes, it's useful to dynamically switch between components, like in a tabbe
 ### DOM Template Parsing Caveats
 -->
 
+
+
+
+
+
+# Components In-Depth
+
+## Component Registration
+
+### Component Names
+When registering a component, it will always be given a name. The name you give a component may depend on where you intend to use it. When using a component directly in the DOM (as opposed to in a string template or single-file component), we strongly recommend following the W3C rules for custom tag names (all lowercase, must contain a hyphen). This helps you avoid conflicts with current and future HTML elements.
+
+#### Name Casing
+You have two options when defining component names:
+
+**kebab-case**
+```js
+Vue.component('my-component-name', { /* ... */ })
+```
+When defining a component with kebab-case, you must also use kebab-case when referencing its custom element, such as  in `<my-component-name>`.
+
+**PascalCase**
+```js
+Vue.component('MyComponentName', { /* ... */ })
+```
+When defining a component with PascalCase, you can use either case when referencing its custom element. That means both `<my-component-name>` and `<MyComponentName>` are acceptable. Note, however, that only kebab-case names are valid directly in the DOM (i.e. non-string templates).
+
+### Global Registration
