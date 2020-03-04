@@ -1173,3 +1173,34 @@ Vue.component('MyComponentName', { /* ... */ })
 When defining a component with PascalCase, you can use either case when referencing its custom element. That means both `<my-component-name>` and `<MyComponentName>` are acceptable. Note, however, that only kebab-case names are valid directly in the DOM (i.e. non-string templates).
 
 ### Global Registration
+So far, we've only created components using `Vue.component`:
+
+```js
+Vue.component('my-component-name', {
+  // ... options ...
+})
+```
+
+
+These components are **globally registered**. That means that they can be used in the template of any root Vue instance ( `new Vue` ) created after registration. For example:
+
+```js
+Vue.component('component-a', { /* ... */ })
+Vue.component('component-b', { /* ... */ })
+Vue.component('component-c', { /* ... */ })
+
+new Vue({ el: '#app' })
+```
+
+```html
+<div id="app">
+  <component-a></component-a>
+  <component-b></component-b>
+  <component-c></component-c>
+</div>
+```
+
+This even applies to all subcomponents, meaning all three of these components will also be available *inside each other*.
+
+
+### Local Registration
