@@ -1349,3 +1349,55 @@ requireComponent.keys().forEach(fileName => {
 ```
 
 ## Props
+
+### Prop Casing (camelCase vs kebab-case)
+HTML attribute names are case-insensitive, so browsers will interpret any uppercase characters as lowercase. That means when you're using in DOM-templates, camesCased prop names need to use their kebab-cased equivalents:
+
+```js
+Vue.component('blog-post', {
+  // camelCase in JavaScript
+  props: ['postTitle'],
+  template: '<h3>{{ postTitle }}</h3>'
+})
+```
+```html
+<!-- kebab-case in HTML -->
+<blog-post post-title="hello!"></blog-post>
+```
+
+Again, if you're using string templates, this limitation does not apply.
+
+### Prop Types
+So far, we've only seen props listed as an array of strings:
+
+```js
+props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+```
+
+Usually though, you'll want every prop to be a specific type of value. In these cases, you can list props as an object, where the properties' names and values contain the prop names and types, repectively:
+
+```js
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object,
+  callback: Function,
+  contactsPromise: Promise // or any other constructor
+}
+```
+
+This not only documents your component, but will also warn users in the browser's JS console if they pass the wrong type. 
+
+### Passing Static or Dynamic Props
+
+##### Passing a Number
+
+##### Passing a Boolean
+
+##### Passing an Array
+
+##### Passing an Object
+
+##### Passing the Properties of an Object
