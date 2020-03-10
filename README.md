@@ -1391,13 +1391,92 @@ props: {
 This not only documents your component, but will also warn users in the browser's JS console if they pass the wrong type. 
 
 ### Passing Static or Dynamic Props
+So far, you've seen props passed a static value, like in:
+
+```html
+<blog-post title="My journey with Vue"></blog-post>
+```
+
+You've also seen props assigned dynamically with `v-bind`, such as in:
+
+```html
+<!-- Dynamically assign the value of a variable -->
+<blog-post v-bind:title="post.title"></blog-post>
+
+<!-- Dynamically assign the value of a complex expression -->
+<blog-post
+  v-bind:title="post.title + ' by ' + post.author.name"
+></blog-post>
+```
+
+In the two examples above, we happen to pass string values, but any type of value can actually bs passed to a prop.
 
 ##### Passing a Number
+```html
+<!-- Even though `42` is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.       -->
+<blog-post v-bind:likes="42"></blog-post>
 
+<!-- Dynamically assign to the value of a variable. -->
+<blog-post v-bind:likes="post.likes"></blog-post>
+```
 ##### Passing a Boolean
+```html
+<!-- Including the prop with no value will imply `true`. -->
+<blog-post is-published></blog-post>
 
+<!-- Even though `false` is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.          -->
+<blog-post v-bind:is-published="false"></blog-post>
+
+<!-- Dynamically assign to the value of a variable. -->
+<blog-post v-bind:is-published="post.isPublished"></blog-post>
+```
 ##### Passing an Array
+```html
+<!-- Even though the array is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.            -->
+<blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
 
+<!-- Dynamically assign to the value of a variable. -->
+<blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+```
 ##### Passing an Object
+```html
+<!-- Even though the object is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.             -->
+<blog-post
+  v-bind:author="{
+    name: 'Veronica',
+    company: 'Veridian Dynamics'
+  }"
+></blog-post>
 
+<!-- Dynamically assign to the value of a variable. -->
+<blog-post v-bind:author="post.author"></blog-post>
+```
 ##### Passing the Properties of an Object
+If you want to pass all the properties of an object as props, you can use `v-bind` without an argument (`v-bind` instead of `v-bind:prop-name`). For example, given a `post` object:
+
+```js
+post: {
+  id: 1,
+  title: 'My Journey with Vue'
+}
+```
+
+The following template:
+```html
+<blog-post v-bind="post"></blog-post>
+```
+
+Will be equivalent to: 
+
+```html
+<blog-post
+  v-bind:id="post.id"
+  v-bind:title="post.title"
+></blog-post>
+```
+
+### One-Way Data Flow
