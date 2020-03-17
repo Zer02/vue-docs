@@ -1511,3 +1511,76 @@ computed: {
 NOTE: Objects and arrays in JavaScript are passed by reference, so if the prop is an array or object, mutating the object or array itself inside the child component WILL affect parent state.
 
 ### Prop Validation
+Components can specify requirements for their props, such as the types you've already seen. If a requirement isn't met, Vue will warn you in the browser's JS console. this is especially useful when devleloping a component that's intended to be used by others.
+
+To specify prop validations, you can provide an object with validation requirements to the value of `props`, instead of an array of strings. For example:
+
+```js
+Vue.component('my-component', {
+  props: {
+    // Basic type check (`null` and `undefined` values will pass any type validation)
+    propA: Number,
+    // Multiple possible types
+    propB: [String, Number],
+    // Required string
+    propC: {
+      type: String,
+      required: true
+    },
+    // Number with a default value
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // Object with a default value
+    propE: {
+      type: Object,
+      // Object or array defaults must be returned from
+      // a factory function
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    // Custom validator function
+    propF: {
+      validator: function (value) {
+        // The value must match one of these strings
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+})
+```
+When prop validation fails, Vue will produce a console warning (if using the development build). Note that props are validated *before* a component instance is created, so instance properties (e.g. `data`, `computed`, etc.) will not be available inside `default` or `validator` functions.
+
+#### Type Checks
+The `type` can be one of the following native constructors:
+* String
+* Number
+* Boolean
+* Array
+* Object
+* Date
+* Function
+* Symbol
+
+In addition, `type` can also be a custom constructor function and the assertion will be made with an instanceof check. For example, given the following constructor function exists:
+
+```js
+function Person (firstName, lastName) {
+  this.firstName = firstName
+  this.lastName = lastName
+}
+```
+
+You could use:
+```js
+Vue.component('blog-post', {
+  props: {
+    author: Person
+  }
+})
+```
+to validate that the value of the `author` prop was created with `new Person`.
+
+### Non-Prop Attributes
